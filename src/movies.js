@@ -20,7 +20,7 @@ function howManyMovies(moviesArray) {
     if (moviesDramaSpilberg.length === 0 && moviesDramaSpilberg.director !== "Steven Spielberg") {
         return 0
     } else {
-        return moviesDramaSpilberg.length;
+        return moviesDramaSpilberg.length
     }
 
 }
@@ -32,9 +32,9 @@ function scoresAverage(moviesArray) {
     const scoreAvg = moviesArray.reduce((acc, eachMovie) => {
 
         if (moviesArray.length === 0) {
-            return 0;
+            return 0
         } else if (!eachMovie.score) {
-            eachMovie.score = 0;
+            eachMovie.score = 0
             return acc + eachMovie.score / moviesArray.length
         } else {
             return acc + eachMovie.score / moviesArray.length
@@ -101,7 +101,7 @@ function orderAlphabetically(moviesArray) {
         return eachTitle.title
     })
 
-    moviesTitle.sort();
+    moviesTitle.sort()
 
     /*
         const moviesOrderByTitle = moviesTitle.sort((a,b) => {
@@ -148,7 +148,7 @@ function turnHoursToMinutes(moviesArray) {
 
         movie.duration = hours * 60 + min
 
-    });
+    })
 
 
     return clonedList
