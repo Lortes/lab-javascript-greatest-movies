@@ -4,15 +4,26 @@
 // How could you "clean" a bit this array and make it unified (without duplicates)?
 
 function getAllDirectors(moviesArray) {
+
     const allDirectors = moviesArray.map((eachDirector) => {
         return eachDirector.director
     })
-    return allDirectors
+
+    const cleanArrDirectors = []
+    allDirectors.forEach(director => {
+        if (!cleanArrDirectors.includes(director)) {
+            cleanArrDirectors.push(director)
+        } else return
+    })
+
+    return cleanArrDirectors
 }
+
 
 
 // Iteration 2: Steven Spielberg. The best? - How many drama movies did STEVEN SPIELBERG direct?
 function howManyMovies(moviesArray) {
+
     const moviesDramaSpilberg = moviesArray.filter((eachMovie) => {
         return eachMovie.director === "Steven Spielberg" && eachMovie.genre.includes("Drama")
     })
@@ -48,6 +59,7 @@ function scoresAverage(moviesArray) {
 
 // Iteration 4: Drama movies - Get the average of Drama Movies
 function dramaMoviesScore(moviesArray) {
+
     const moviesDrama = moviesArray.filter(eachMovie => {
         return eachMovie.genre.includes("Drama")
     })
@@ -97,6 +109,7 @@ function orderByYear(moviesArray) {
 
 // Iteration 6: Alphabetic Order - Order by title and print the first 20 titles
 function orderAlphabetically(moviesArray) {
+
     const moviesTitle = moviesArray.map((eachTitle) => {
         return eachTitle.title
     })
@@ -124,41 +137,71 @@ function orderAlphabetically(moviesArray) {
 
 // BONUS - Iteration 7: Time Format - Turn duration of the movies from hours to minutes
 function turnHoursToMinutes(moviesArray) {
-    const clonedList = JSON.parse(JSON.stringify(moviesArray))
 
-    clonedList.forEach(movie => {
+    const newArray = JSON.parse(JSON.stringify(moviesArray))
 
-        let hours = 0
-        let min = 0
-        let arrAux = movie.duration.split('h')
-
-        hours = arrAux[0]
-
-
-        /*
-        console.log(arrAux[1])
-        
-        
-        if (arrAux.length>1) {
-            let minAux = arrAux[1].split('min')
-            min = minAux[0]
+    let minutesArray = newArray.map(movie => {
+        const newMovie = {
+            ...movie
         }
-        */
 
-
-        movie.duration = hours * 60 + min
-
+        if (movie.duration.includes("h") && movie.duration.includes("min")) {
+            newMovie.duration = parseInt(movie.duration.substr(0, 1)) * 60 + parseInt(movie.duration.substr(3, 5))
+            return newMovie
+        } else if (movie.duration.includes("h")) {
+            newMovie.duration = parseInt(movie.duration.substr(0, 1)) * 60
+            return newMovie
+        } else if (elm.duration.includes("min")) {
+            newMovie.duration = parseInt(movie.duration.substr(-5, 2))
+            return newMovie
+        } return newMovie
     })
-
-
-    return clonedList
+    return minutesArray
 
 }
 
 // BONUS - Iteration 8: Best yearly score average - Best yearly score average
 function bestYearAvg(moviesArray) {
-    if (moviesArray.length === 0) {
+
+    const newArray = JSON.parse(JSON.stringify(moviesArray))
+
+    if (!moviesArray.length) {
         return null
     }
+
+    const orderedByYear = orderByYear(newArray)
+    const finalArray = []
+    const yearsDone = []
+
+    orderedByYear.forEach(movie => {
+        let movieYear = movie.year
+
+        if (yearsDone.includes(movieYear)) {
+            return
+        }
+
+        yearsDone.push(movieYear)
+
+        const sameYearArr = orderedByYear.filter(movie => {
+            return movie.year === movieYear
+        })
+
+
+        let totalScore = 0
+        sameYearArr.forEach(movie => {
+            totalScore += movie.score
+        })
+
+        const yearFilms = {
+            year: movieYear,
+            score: totalScore / sameYearArr.length
+        }
+
+        return finalArray.push(yearFilms)
+    })
+
+    finalArray.sort((a, b) => b.score - a.score)
+
+    return `The best year was ${finalArray[0].year} with an average score of ${finalArray[0].score}`
 
 }
